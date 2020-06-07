@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "target": "es2017",
+    "outDir": "build/main",
+    "rootDir": "src",
+    "incremental": true,
+    "moduleResolution": "node",
+
+    "module": "commonjs",
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+
+    /* Experimental Options */
+    // "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
+    // "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
+
+    "lib": ["es2017"],
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+  "compileOnSave": false
+}
