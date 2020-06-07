@@ -116,8 +116,6 @@ export class Jetstream
   async onEvent(payload: any, replyTo: string, eventType: any) {
     payload = JSON.parse(payload)
 
-    console.log('onEvent', payload, replyTo, eventType)
-
     const handler = this.eventHandlers[eventType]
     if (!handler) {
       this.logger.error(
