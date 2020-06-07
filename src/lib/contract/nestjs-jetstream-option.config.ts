@@ -1,4 +1,3 @@
-
 import { IEvent } from '@nestjs/cqrs'
 
 export interface IEventConstructors {

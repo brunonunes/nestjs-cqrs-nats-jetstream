@@ -10,9 +10,7 @@ import { ProvidersConstants } from './contract'
   imports: [CqrsModule],
 })
 export class JetstreamCoreModule {
-
   static register(option: any): DynamicModule {
-
     const jetstreamProviders = {
       provide: ProvidersConstants.JETSTREAM_PROVIDER,
       useFactory: (): any => {
@@ -35,7 +33,6 @@ export class JetstreamCoreModule {
   }
 
   static registerFeature(config: any): DynamicModule {
-
     if (config === undefined || config === null) {
       throw new Error('Config missing')
     }
@@ -52,11 +49,7 @@ export class JetstreamCoreModule {
         },
         Jetstream,
       ],
-      exports: [
-        Jetstream,
-        ExplorerService,
-      ],
+      exports: [Jetstream, ExplorerService],
     }
   }
-
 }

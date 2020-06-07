@@ -1,6 +1,12 @@
 /* tslint:disable:variable-name */
 
-import { Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
+import {
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common'
 import { IEvent, IEventPublisher, EventBus, IMessageSource } from '@nestjs/cqrs'
 import { Subject } from 'rxjs'
 import { v4 } from 'uuid'
@@ -15,7 +21,8 @@ import { NestjsJetstream } from './nestjs-jetstream.class'
  * @class Jetstream
  */
 @Injectable()
-export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit, IMessageSource {
+export class Jetstream
+  implements IEventPublisher, OnModuleDestroy, OnModuleInit, IMessageSource {
   private logger = new Logger(this.constructor.name)
   private jetstream: NestjsJetstream
   private eventHandlers: IEventConstructors
@@ -24,11 +31,12 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
 
   constructor(
     @Inject(ProvidersConstants.JETSTREAM_PROVIDER) jetstream: any,
-    @Inject(ProvidersConstants.JETSTREAM_CONNECTION_CONFIG_PROVIDER) configService: any,
-    @Inject(ProvidersConstants.JETSTREAM_STREAM_CONFIG_PROVIDER) jetstreamStreamConfig: any,
+    @Inject(ProvidersConstants.JETSTREAM_CONNECTION_CONFIG_PROVIDER)
+    configService: any,
+    @Inject(ProvidersConstants.JETSTREAM_STREAM_CONFIG_PROVIDER)
+    jetstreamStreamConfig: any,
     private readonly eventsBus: EventBus,
   ) {
-
     this.jetstream = jetstream
     this.featureSubjectPrefix = jetstreamStreamConfig.featureSubjectPrefix
     this.addEventHandlers(jetstreamStreamConfig.eventHandlers)
@@ -37,7 +45,6 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
     const subjectSubscriptions = jetstreamStreamConfig.subscriptions
 
     this.subscribeSubjects(subjectSubscriptions)
-
   }
 
   async sendAck(id: string) {
@@ -49,8 +56,12 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
   }
 
   async publish(event: IEvent, stream?: string) {
-    if (event === undefined) { return }
-    if (event === null) { return }
+    if (event === undefined) {
+      return
+    }
+    if (event === null) {
+      return
+    }
 
     const eventType = event.constructor.name
     const subjectPrefix = this.featureSubjectPrefix
@@ -66,7 +77,9 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
     }
 
     try {
-      await this.jetstream.getConnection().publish(publishTo, JSON.stringify(eventPayload))
+      await this.jetstream
+        .getConnection()
+        .publish(publishTo, JSON.stringify(eventPayload))
     } catch (err) {
       this.logger.error(err)
     }
@@ -74,24 +87,23 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
 
   async subscribeSubjects(subjects) {
     await Promise.all(
-      subjects.map(async (subject) => {
+      subjects.map(async subject => {
         return await this.subscribeSubject(subject.subject)
       }),
     )
   }
 
-  async subscribeSubject(
-    subject: string,
-  ): Promise<any> {
+  async subscribeSubject(subject: string): Promise<any> {
     try {
       this.logger.log(`
         Subscribing ${subject}!
       `)
 
-      const resolved = await this.jetstream.getConnection().subscribe(
-        subject,
-        (payload, ack, eventType) => this.onEvent(payload, ack, eventType)
-      )
+      const resolved = await this.jetstream
+        .getConnection()
+        .subscribe(subject, (payload, ack, eventType) =>
+          this.onEvent(payload, ack, eventType),
+        )
 
       resolved.isLive = true
 
@@ -102,14 +114,15 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
   }
 
   async onEvent(payload: any, replyTo: string, eventType: any) {
-
     payload = JSON.parse(payload)
 
     console.log('onEvent', payload, replyTo, eventType)
 
     const handler = this.eventHandlers[eventType]
     if (!handler) {
-      this.logger.error(`Received event ${eventType} that could not be handled!`)
+      this.logger.error(
+        `Received event ${eventType} that could not be handled!`,
+      )
       return
     }
 
@@ -121,15 +134,14 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
     if (this.eventHandlers && this.eventHandlers[eventType]) {
       this.subject$.next(this.eventHandlers[eventType](data, ack, payload))
     } else {
-      Logger.warn(`Event of type ${eventType} not handled`, this.constructor.name)
+      Logger.warn(
+        `Event of type ${eventType} not handled`,
+        this.constructor.name,
+      )
     }
   }
 
-  onDropped(
-    consumer,
-    _reason: string,
-    error: Error,
-  ) {
+  onDropped(consumer, _reason: string, error: Error) {
     consumer.isLive = false
     this.logger.error('onDropped => ' + error)
   }
@@ -154,5 +166,4 @@ export class Jetstream implements IEventPublisher, OnModuleDestroy, OnModuleInit
   async bridgeEventsTo<T extends IEvent>(subject: Subject<T>): Promise<any> {
     this.subject$ = subject
   }
-
 }

@@ -15,7 +15,6 @@ export class NestjsJetstream {
   }
 
   connect(options: any) {
-
     try {
       this.connection = NATS.connect(options)
 

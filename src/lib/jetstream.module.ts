@@ -6,7 +6,6 @@ import { CqrsModule } from '@nestjs/cqrs'
   imports: [CqrsModule],
 })
 export class JetstreamModule {
-
   static register(option: any): DynamicModule {
     return {
       module: JetstreamModule,
@@ -20,5 +19,4 @@ export class JetstreamModule {
       imports: [JetstreamCoreModule.registerFeature(config)],
     }
   }
-
 }
