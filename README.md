@@ -3,7 +3,7 @@ NestJS CQRS NATS Jetstream
 </h1>
 
 <p  align="center">
-NestJS CQRS module for NATS. It requires @nestjs/cqrs.
+NestJS CQRS module for NATS JetStream. It requires @nestjs/cqrs.
 </p>
 
 <p  align="center">
