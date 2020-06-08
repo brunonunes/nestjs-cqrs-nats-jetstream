@@ -72,9 +72,9 @@ import {
         },
       ],
       eventHandlers: {
-        UserLoggedInEvent: (data) => new UserLoggedInEvent(data),
-        UserRegisteredEvent: (data) => new UserRegisteredEvent(data),
-        EmailVerifiedEvent: (data) => new EmailVerifiedEvent(data),
+        UserLoggedInEvent: (data, ack, raw) => new UserLoggedInEvent(data, ack, raw),
+        UserRegisteredEvent: (data, ack, raw) => new UserRegisteredEvent(data, ack, raw),
+        EmailVerifiedEvent: (data, ack, raw) => new EmailVerifiedEvent(data, ack, raw),
       },
     }),
   ],
