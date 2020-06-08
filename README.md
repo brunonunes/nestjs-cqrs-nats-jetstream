@@ -7,17 +7,16 @@ NestJS CQRS module for NATS. It requires @nestjs/cqrs.
 </p>
 
 <p  align="center">
-<a  href="https://www.npmjs.com/package/@brunonunes/nestjs-cqrs-nats-jetstream"  target="_blank"><img  src="https://img.shields.io/npm/v/@brunonunes/nestjs-cqrs-nats-jetstream?style=flat-square"  alt="NPM Version"/></a>
-<a  href="https://img.shields.io/npm/l/@brunonunes/nestjs-cqrs-nats-jetstream?style=flat-square"  target="_blank"><img  src="https://img.shields.io/npm/l/@brunonunes/nestjs-cqrs-nats-jetstream?style=flat-square"  alt="License"/></a>
-<a  href="https://img.shields.io/github/languages/code-size/juicycleff/nestjs-event-store?style=flat-square"  target="_blank"><img  src="https://img.shields.io/github/languages/code-size/juicycleff/nestjs-event-store?style=flat-square"  alt="Code Size"/></a>
-<a  href="https://img.shields.io/github/languages/top/juicycleff/nestjs-event-store?style=flat-square"  target="_blank"><img  src="https://img.shields.io/github/languages/top/juicycleff/nestjs-event-store?style=flat-square"  alt="Top Language"/></a>
-<a  href="https://img.shields.io/codacy/grade/0944a2f07aca403da4d4637606af7478?style=flat-square"  target="_blank"><img  src="https://img.shields.io/codacy/grade/dc460840375d4ac995f5647a5ed10179?style=flat-square"  alt="Top Language"/></a>
+<a  href="https://www.npmjs.com/package/nestjs-cqrs-nats-jetstream"  target="_blank"><img  src="https://img.shields.io/npm/v/nestjs-cqrs-nats-jetstream?style=flat-square"  alt="NPM Version"/></a>
+<a  href="https://img.shields.io/npm/l/nestjs-cqrs-nats-jetstream?style=flat-square"  target="_blank"><img  src="https://img.shields.io/npm/l/nestjs-cqrs-nats-jetstream?style=flat-square"  alt="License"/></a>
+<a  href="https://img.shields.io/github/languages/code-size/brunonunes/nestjs-cqrs-nats-jetstream?style=flat-square"  target="_blank"><img  src="https://img.shields.io/github/languages/code-size/brunonunes/nestjs-cqrs-nats-jetstream?style=flat-square"  alt="Code Size"/></a>
+<a  href="https://img.shields.io/github/languages/top/brunonunes/nestjs-cqrs-nats-jetstream?style=flat-square"  target="_blank"><img  src="https://img.shields.io/github/languages/top/brunonunes/nestjs-cqrs-nats-jetstream?style=flat-square"  alt="Top Language"/></a>
 </p>
 
   
 ## Installation
 ```bash
-$ yarn install @brunonunes/nestjs-cqrs-nats-jetstream
+$ yarn install nestjs-cqrs-nats-jetstream
 ```
 
 
@@ -44,17 +43,17 @@ export  class  AppModule {}
 ### Setup feature module
 
 ```typescript
-import { Module } from  '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { 
   CommandBus, 
   CqrsModule, 
   EventBus 
-} from  '@nestjs/cqrs';
+} from '@nestjs/cqrs';
 import { 
   JetstreamModule,
   Jetstream, 
   JetstreamSubscriptionType 
-} from  '@brunonunes/nestjs-cqrs-nats-jetstream';
+} from 'nestjs-cqrs-nats-jetstream';
 import {
   UserCommandHandlers,
   UserCreatedEvent,

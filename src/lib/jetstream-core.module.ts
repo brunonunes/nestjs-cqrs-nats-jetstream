@@ -1,5 +1,4 @@
-import { DynamicModule, Global, Module, Provider, Type } from '@nestjs/common'
-import { ExplorerService } from '@nestjs/cqrs/dist/services/explorer.service'
+import { DynamicModule, Global, Module } from '@nestjs/common'
 import { Jetstream } from './jetstream'
 import { NestjsJetstream } from './nestjs-jetstream.class'
 import { CqrsModule } from '@nestjs/cqrs'
@@ -40,7 +39,6 @@ export class JetstreamCoreModule {
     return {
       module: JetstreamCoreModule,
       providers: [
-        ExplorerService,
         {
           provide: ProvidersConstants.JETSTREAM_STREAM_CONFIG_PROVIDER,
           useValue: {
@@ -49,7 +47,7 @@ export class JetstreamCoreModule {
         },
         Jetstream,
       ],
-      exports: [Jetstream, ExplorerService],
+      exports: [Jetstream],
     }
   }
 }
