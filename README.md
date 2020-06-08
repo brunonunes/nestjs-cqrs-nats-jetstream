@@ -38,22 +38,32 @@ import { JetstreamModule } from  '@brunonunes/nestjs-cqrs-nats-jetstream';
 export  class  AppModule {}
 ```
 
-## Setup module
+## Setup
+
+### Setup NATS JetStream
+
+Create a stream by configuring the subject with a wildcard. Your events will be published with the ```featureSubjectPrefix```, something like ```USER.UserLoggedInEvent```. Thus, all events published by the module will be sent to that stream.
+```bash
+$ nats stream add
+? Stream Name USER
+? Subjects to consume USER.*
+? ...
+```
+
+You now need to create one or more consumers. The module can subscribe to one or more, do as you see fit. The name of the consumer makes no difference to the handlers, we only need the delivery target to subscribe.
+```bash
+$ nats consumer add
+? Consumer name USER-SERVICE
+? Delivery target CONSUMER-user-service
+? ...
+```
 
 ### Setup feature module
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { 
-  CommandBus, 
-  CqrsModule, 
-  EventBus 
-} from '@nestjs/cqrs';
-import { 
-  JetstreamModule,
-  Jetstream, 
-  JetstreamSubscriptionType 
-} from 'nestjs-cqrs-nats-jetstream';
+import { CqrsModule } from '@nestjs/cqrs';
+import { JetstreamModule } from 'nestjs-cqrs-nats-jetstream';
 import {
   UserCommandHandlers,
   UserCreatedEvent,
@@ -65,16 +75,16 @@ import {
   imports: [
     CqrsModule,
     JetstreamModule.registerFeature({
-      featureStreamName: 'USER',
+      featureSubjectPrefix: 'USER', // Events will be published with this prefix.
       subscriptions: [
         {
-          name: "con-user-service"
+          name: "CONSUMER-user-service" // Insert the consumer delivery target
         },
       ],
       eventHandlers: {
-        UserLoggedInEvent: (data, ack, raw) => new UserLoggedInEvent(data, ack, raw),
-        UserRegisteredEvent: (data, ack, raw) => new UserRegisteredEvent(data, ack, raw),
-        EmailVerifiedEvent: (data, ack, raw) => new EmailVerifiedEvent(data, ack, raw),
+        "USER.UserLoggedInEvent": (data, ack, raw) => new UserLoggedInEvent(data, ack, raw),
+        "USER.UserRegisteredEvent": (data, ack, raw) => new UserRegisteredEvent(data, ack, raw),
+        "USER.EmailVerifiedEvent": (data, ack, raw) => new EmailVerifiedEvent(data, ack, raw),
       },
     }),
   ],
